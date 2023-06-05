@@ -5,6 +5,8 @@ package com.sky.constant;
  */
 public class MessageConstant {
 
+    public static final String PHONE_FORMAT_EXCEPTION = "手机号格式错误，请检查后再试";
+    public static final String ID_NUMBER_FORMAT_EXCEPTION = "身份证号格式错误，请检查后再试";
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String ACCOUNT_NOT_FOUND = "账号不存在";
     public static final String ACCOUNT_LOCKED = "账号被锁定";
@@ -24,4 +26,5 @@ public class MessageConstant {
     public static final String ORDER_STATUS_ERROR = "订单状态错误";
     public static final String ORDER_NOT_FOUND = "订单不存在";
 
+    public static final String ALREADY_EXISTS = "该用户名已经存在";
 }
