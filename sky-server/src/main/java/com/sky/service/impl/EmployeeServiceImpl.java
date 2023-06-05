@@ -1,5 +1,7 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.RegexConstant;
@@ -7,9 +9,11 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -29,7 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工登录
-     *
      * @param employeeLoginDTO 员工登录时传递的数据模型
      * @return 统一的响应结果
      */
@@ -62,6 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO 员工登录时传递的数据模型
      */
     @Override
@@ -71,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new PhoneIsErrorException(MessageConstant.PHONE_FORMAT_EXCEPTION);
         }
         //身份证检验
-        if (!employeeDTO.getIdNumber().matches(RegexConstant.ID_NUMBER_REGEX)){
+        if (!employeeDTO.getIdNumber().matches(RegexConstant.ID_NUMBER_REGEX)) {
             throw new IdNumberFormatException(MessageConstant.ID_NUMBER_FORMAT_EXCEPTION);
         }
 
@@ -91,12 +95,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
 
         //设置当前创建人id和修改人id,从ThreadLocal
-        //TODO:后期需要更改为当前登录人的id,已解决
+        // TODO:后期需要更改为当前登录人的id,已解决
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
 
         //执行插入
         employeeMapper.inset(employee);
+    }
+
+    /**
+     * 分页查询
+     * @param employeePageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        Page<Employee> pageQuery = employeeMapper.pageQuery(employeePageQueryDTO);
+        return new PageResult(pageQuery.getTotal(), pageQuery.getResult());
     }
 
 }
