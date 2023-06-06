@@ -37,3 +37,11 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+aliyun:
+  oss:
+    endpoint: https://oss-cn-hangzhou.aliyuncs.com
+    accessKeyId: LTAI5tEKnMymfFc3UTdm5cE8
+    accessKeySecret: icdHd5uGFn2BUmIJLYqxOa1m27oXdE
+    bucketName: xruiniu
+

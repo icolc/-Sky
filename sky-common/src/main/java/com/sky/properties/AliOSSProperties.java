@@ -4,14 +4,21 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties(prefix = "sky.alioss")
+/**
+ * @author NXRUI
+ * @version 1.0
+ * @date 2023/5/23 8:44
+ * @description:
+ */
 @Data
-public class AliOssProperties {
-
+@Component
+@ConfigurationProperties(prefix = "aliyun.oss")
+public class AliOSSProperties {
     private String endpoint;
-    private String accessKeyId;
-    private String accessKeySecret;
-    private String bucketName;
 
+    private String accessKeyId;
+
+    private String accessKeySecret;
+
+    private String bucketName;
 }
