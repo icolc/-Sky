@@ -15,6 +15,7 @@ import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
 
@@ -106,7 +108,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 分页查询
-     *
      * @param employeePageQueryDTO
      * @return
      */
@@ -119,7 +120,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 启用或禁用员工
-     *
      * @param status 状态码
      * @param id     员工id
      */
@@ -132,4 +132,32 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(build);
     }
 
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    @Override
+    public EmployeeDTO selectById(Integer id) {
+        log.info("selectById() called with parameters => 【id = {}】",id);
+        Employee employee = employeeMapper.getById(id);
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        BeanUtils.copyProperties(employee,employeeDTO);
+        return employeeDTO;
+    }
+
+    /**
+     * 修改员工
+     * @param employeeDTO
+     */
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        log.info("updateEmp() called with parameters => 【employeeDTO = {}】",employeeDTO);
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
 }

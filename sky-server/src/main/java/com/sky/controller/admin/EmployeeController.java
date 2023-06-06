@@ -113,4 +113,25 @@ public class EmployeeController {
         employeeService.startOrStop(status,id);
         return Result.success();
     }
+
+    /**
+     * 根据ID查询员工
+     */
+    @ApiOperation("查询回显")
+    @GetMapping("/{id}")
+    public Result<EmployeeDTO> selectByID(@PathVariable Integer id){
+        log.info("selectByID() called with parameters => 【id = {}】",id);
+        EmployeeDTO employeeDTO = employeeService.selectById(id);
+        return Result.success(employeeDTO);
+    }
+    /**
+     * 修改员工
+     */
+    @PutMapping
+    @ApiOperation("编辑员工")
+    public Result<?> update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("updateEmp() called with parameters => 【employeeDTO = {}】",employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 }

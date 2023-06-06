@@ -36,4 +36,11 @@ public interface EmployeeMapper {
      * @param build 传递的条件
      */
     void update(Employee build);
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    Employee getById(Integer id);
 }
