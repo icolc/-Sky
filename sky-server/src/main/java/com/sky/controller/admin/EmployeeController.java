@@ -36,7 +36,6 @@ public class EmployeeController {
 
     /**
      * 登录
-     *
      * @param employeeLoginDTO 员工登录时传递的数据模型
      * @return 统一的响应结果
      */
@@ -67,7 +66,6 @@ public class EmployeeController {
 
     /**
      * 退出
-     *
      * @return
      */
     @ApiOperation("员工登出")
@@ -78,7 +76,6 @@ public class EmployeeController {
 
     /**
      * 新增员工
-     *
      * @param employeeDTO 员工注册时传递的数据模型
      * @return 返回统一响应结果
      */
@@ -92,7 +89,6 @@ public class EmployeeController {
 
     /**
      * 分页查询
-     *
      * @param employeePageQueryDTO 分页查询员工时传递的数据模型
      * @return 返回Result对象
      */
@@ -102,5 +98,19 @@ public class EmployeeController {
         log.info("page() called with parameters => 【employeePageQueryDTO = {}】", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 启用或禁用账号
+     * @param status 状态码
+     * @param id 员工id
+     * @return 返回统一响应结果
+     */
+    @ApiOperation("员工状态")
+    @PostMapping("/status/{status}")
+    public Result<?> startOrStop(@PathVariable Integer status, Long id) {
+        log.info("startOrStop() called with parameters => 【status = {}】, 【id = {}】",status, id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
     }
 }

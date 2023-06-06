@@ -30,4 +30,10 @@ public interface EmployeeMapper {
      * @return page<Employee>
      */
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 根据条件动态修改条件
+     * @param build 传递的条件
+     */
+    void update(Employee build);
 }

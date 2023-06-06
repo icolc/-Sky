@@ -33,6 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工登录
+     *
      * @param employeeLoginDTO 员工登录时传递的数据模型
      * @return 统一的响应结果
      */
@@ -105,6 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
@@ -113,6 +115,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         Page<Employee> pageQuery = employeeMapper.pageQuery(employeePageQueryDTO);
         return new PageResult(pageQuery.getTotal(), pageQuery.getResult());
+    }
+
+    /**
+     * 启用或禁用员工
+     *
+     * @param status 状态码
+     * @param id     员工id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Employee build = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        employeeMapper.update(build);
     }
 
 }
