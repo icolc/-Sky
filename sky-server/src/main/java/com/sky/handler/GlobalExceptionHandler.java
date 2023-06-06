@@ -2,6 +2,7 @@ package com.sky.handler;
 
 import com.sky.constant.MessageConstant;
 import com.sky.exception.BaseException;
+import com.sky.exception.IdNumberFormatException;
 import com.sky.exception.PhoneIsErrorException;
 import com.sky.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +35,19 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(PhoneIsErrorException.class)
-    public Result<?> phoneIsErrorException(PhoneIsErrorException e) {
+    public Result<?> phoneIsErrorException(Exception e) {
         log.error("异常信息：{}", e.getMessage(), e);
         return Result.error(e.getMessage());
     }
 
+    /**
+     * 身份证格式错误
+     */
+    @ExceptionHandler(IdNumberFormatException.class)
+    public Result<?> idNumberFormatException(Exception e){
+        log.error("idNumberFormatException() called with exception => 【e = {}】",e,e);
+        return Result.error(e.getMessage());
+    }
     /**
      * SQLIntegrityConstraintViolationException     异常捕获
      */

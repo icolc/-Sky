@@ -15,13 +15,16 @@ import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import com.sky.vo.EmployeePageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -113,9 +116,17 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        //设置分页条件
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        //执行查询
         Page<Employee> pageQuery = employeeMapper.pageQuery(employeePageQueryDTO);
-        return new PageResult(pageQuery.getTotal(), pageQuery.getResult());
+        //数据脱敏(取消显示密码)
+        List<EmployeePageVO> collect = pageQuery.stream().map(item -> {
+            EmployeePageVO employeePageVO = new EmployeePageVO();
+            BeanUtils.copyProperties(item, employeePageVO);
+            return employeePageVO;
+        }).collect(Collectors.toList());
+        return new PageResult(pageQuery.getTotal(),collect);
     }
 
     /**
@@ -140,7 +151,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO selectById(Integer id) {
         log.info("selectById() called with parameters => 【id = {}】",id);
+        //根据id查询
         Employee employee = employeeMapper.getById(id);
+        //新建DTO对象
         EmployeeDTO employeeDTO = new EmployeeDTO();
         BeanUtils.copyProperties(employee,employeeDTO);
         return employeeDTO;
