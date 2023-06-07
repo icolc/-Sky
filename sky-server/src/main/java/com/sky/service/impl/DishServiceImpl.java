@@ -2,12 +2,17 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DeleteDishIdsIsNullException;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -33,6 +38,9 @@ public class DishServiceImpl implements DishService {
     private DishMapper dishMapper;
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
+
     /**
      * 新增菜品
      *
@@ -50,7 +58,7 @@ public class DishServiceImpl implements DishService {
         Long id = dish.getId();
         //判断该商品的口味是否没有
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        if (Objects.nonNull(flavors) && flavors.size() > 0){
+        if (Objects.nonNull(flavors) && flavors.size() > 0) {
             //将菜品id传进口味里
             flavors.forEach(flavor -> {
                 flavor.setDishId(id);
@@ -62,14 +70,49 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品分页查询
+     *
      * @param dishPageQueryDTO
      * @return
      */
     @Override
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         //设置分页参数
-        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
+        PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
-        return new PageResult(page.getTotal(),page.getResult());
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    /**
+     * 根据ID批量删除
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void deleteByIds(List<Long> ids) {
+        //判断是否为null
+        if (Objects.isNull(ids)) {
+            throw new DeletionNotAllowedException(MessageConstant.DISH_IDS_IS_NULL);
+        }
+        //判断是否是起售中的菜品
+        for (Long id : ids) {
+            //根据ID查询
+            Dish dish = dishMapper.selectById(id);
+            if (Objects.equals(dish.getStatus(), StatusConstant.ENABLE)) {
+                //当前菜品处于起售状态
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+        }
+        //判断是否关联了套餐
+        List<Long> setMealIds = setmealDishMapper.selectSetMealIdsByDishIds(ids);
+        if (Objects.nonNull(setMealIds) && setMealIds.size() > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+        //删除菜品表的数据
+        for (Long id : ids) {
+            dishMapper.deleteById(id);
+            dishFlavorMapper.deleteByDishId(id);
+        }
+
     }
 }
