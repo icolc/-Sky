@@ -33,6 +33,13 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!--spring Date Reads-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>2.7.12</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -129,5 +136,6 @@
                 <version>0.4.8</version>
             </dependency>
         </dependencies>
+
     </dependencyManagement>
 </project>
