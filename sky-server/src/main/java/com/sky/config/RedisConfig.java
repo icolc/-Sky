@@ -18,7 +18,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
     /**
      * 设置Redis链接工厂对象
-     *
      * @param factory
      * @return
      */

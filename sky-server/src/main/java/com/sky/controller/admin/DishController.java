@@ -2,7 +2,6 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
-import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -90,5 +89,15 @@ public class DishController {
         log.info("修改菜品中:{}",dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
+    }
+    /**
+     * 根据id查
+     */
+    @ApiOperation("根据ID查询菜品")
+    @GetMapping("/list")
+    public Result<List<DishVO>> selectList(Integer categoryId){
+        log.info("selectList() called with parameters => 【categoryId = {}】",categoryId);
+        List<DishVO> dishVOs = dishService.selectList(categoryId);
+        return Result.success(dishVOs);
     }
 }

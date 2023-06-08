@@ -35,7 +35,6 @@ public interface DishService {
 
     /**
      * 根据ID查询菜品以及口味数据
-     * @param dishDTO
      * @return
      */
     DishVO selectByIdWithFlavor(Long id);
@@ -45,4 +44,11 @@ public interface DishService {
      * @param dishDTO
      */
     void updateWithFlavor(DishDTO dishDTO);
+
+    /**
+     * 根据分类查询
+     * @param categoryId
+     * @return
+     */
+    List<DishVO> selectList(Integer categoryId);
 }

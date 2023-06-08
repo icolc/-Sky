@@ -8,7 +8,6 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
-import com.sky.exception.DeleteDishIdsIsNullException;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -157,5 +156,16 @@ public class DishServiceImpl implements DishService {
             //有口味：向口味表中插入数据
             dishFlavorMapper.insertBath(flavors);
         }
+    }
+
+    /**
+     * 根据分类查询
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<DishVO> selectList(Integer categoryId) {
+        log.info("selectList() called with parameters => 【categoryId = {}】",categoryId);
+        return dishMapper.selectByCategoryId(categoryId);
     }
 }
