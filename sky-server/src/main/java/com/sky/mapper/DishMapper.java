@@ -79,4 +79,11 @@ public interface DishMapper {
 
     @Update("update dish set status = #{status} where id = #{id}")
     void statusOrStop(Integer status, Long id);
+
+    /**
+     * 根据名字查询
+     * @param name
+     * @return
+     */
+    List<DishVO> selectByName(String name);
 }

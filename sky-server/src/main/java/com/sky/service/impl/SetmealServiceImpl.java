@@ -163,7 +163,7 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Override
     public void updateStatus(Integer status, Long id) {
-        if (Objects.equals(status, StatusConstant.ENABLE)) {
+        if (status.equals(StatusConstant.ENABLE)){
             List<Integer> disList = setmealDishMapper.selectAllBySetmealId(id);
             //根据菜品id查询菜品是否起售
             disList.stream().forEach(dis -> {

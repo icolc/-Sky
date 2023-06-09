@@ -50,7 +50,7 @@ public interface DishService {
      * @param categoryId
      * @return
      */
-    List<DishVO> selectList(Integer categoryId);
+    List<DishVO> selectList(Integer categoryId,String name);
 
     /**
      * 修改菜品状态

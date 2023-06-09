@@ -63,7 +63,7 @@ public class SetmealController {
      */
     @ApiOperation("查询回显")
     @GetMapping("/{id}")
-    public Result<SetmealVO> selectByid(@PathVariable Long id) {
+    public Result<SetmealVO> selectById(@PathVariable Long id) {
         log.info("selectByid() called with parameters => 【id = {}】", id);
         //调用service方法
         SetmealVO setmealVO = setmealService.selectById(id);

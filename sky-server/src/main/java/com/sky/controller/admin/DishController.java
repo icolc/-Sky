@@ -94,9 +94,9 @@ public class DishController {
      */
     @ApiOperation("根据ID查询菜品")
     @GetMapping("/list")
-    public Result<List<DishVO>> selectList(Integer categoryId){
+    public Result<List<DishVO>> selectList(Integer categoryId,String name){
         log.info("selectList() called with parameters => 【categoryId = {}】",categoryId);
-        List<DishVO> dishVOs = dishService.selectList(categoryId);
+        List<DishVO> dishVOs = dishService.selectList(categoryId,name);
         return Result.success(dishVOs);
     }
     /**

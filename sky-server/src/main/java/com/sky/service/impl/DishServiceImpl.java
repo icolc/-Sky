@@ -83,6 +83,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据ID批量删除
+     *
      * @param ids
      */
     @Override
@@ -116,6 +117,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id查询菜品以及口味数据
+     *
      * @param id
      * @return
      */
@@ -134,13 +136,14 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 修改菜品
+     *
      * @param dishDTO
      */
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
         //先拷贝到Dish对象
         Dish dish = new Dish();
-        BeanUtils.copyProperties(dishDTO,dish);
+        BeanUtils.copyProperties(dishDTO, dish);
         //修改菜品基本信息
         dishMapper.update(dish);
         //删除口味数据
@@ -159,22 +162,28 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据分类查询
+     *
      * @param categoryId
      * @return
      */
     @Override
-    public List<DishVO> selectList(Integer categoryId) {
-        log.info("selectList() called with parameters => 【categoryId = {}】",categoryId);
-        return dishMapper.selectByCategoryId(categoryId);
+    public List<DishVO> selectList(Integer categoryId, String name) {
+        log.info("selectList() called with parameters => 【categoryId = {}】", categoryId);
+        if (Objects.isNull(name)) {
+            return dishMapper.selectByCategoryId(categoryId);
+        }else {
+            return dishMapper.selectByName(name);
+        }
     }
 
     /**
      * 菜品停售或起售
+     *
      * @param status
      * @param id
      */
     @Override
     public void statusOrStop(Integer status, Long id) {
-        dishMapper.statusOrStop(status,id);
+        dishMapper.statusOrStop(status, id);
     }
 }
