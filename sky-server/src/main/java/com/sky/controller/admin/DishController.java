@@ -29,8 +29,7 @@ public class DishController {
     private DishService dishService;
 
     /**
-     * 新增菜品
-     *
+     * 新增菜品6
      * @param dishDTO
      * @return
      */

@@ -83,11 +83,10 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据ID批量删除
-     *
      * @param ids
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByIds(List<Long> ids) {
         //判断是否为null
         if (Objects.isNull(ids)) {
