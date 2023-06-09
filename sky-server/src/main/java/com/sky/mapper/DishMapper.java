@@ -9,6 +9,7 @@ import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public interface DishMapper {
 
     /**
      * 菜品分页查询
+     *
      * @param dishPageQueryDTO
      * @return
      */
@@ -44,6 +46,7 @@ public interface DishMapper {
 
     /**
      * 根据ID删除
+     *
      * @param id
      */
     @Delete("delete from dish where id = #{id}")
@@ -51,6 +54,7 @@ public interface DishMapper {
 
     /**
      * 修改菜品数据
+     *
      * @param dish
      */
     @UpdateAutoFile
@@ -58,9 +62,21 @@ public interface DishMapper {
 
     /**
      * 根据分类id查询
+     *
      * @param categoryId
      * @return
      */
     @Select("select * from dish where category_id = #{categoryId}")
     List<DishVO> selectByCategoryId(Integer categoryId);
+
+    /**
+     * 根据套餐关系表确定是否存在为起售的
+     *
+     * @param id
+     */
+    @Select("select count(*) from dish where status = 0 and id = #{id}")
+    List<Integer> selectStatusBySetmaelDishId(Long id);
+
+    @Update("update dish set status = #{status} where id = #{id}")
+    void statusOrStop(Integer status, Long id);
 }

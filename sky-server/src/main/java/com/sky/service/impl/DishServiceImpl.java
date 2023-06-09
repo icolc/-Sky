@@ -167,4 +167,14 @@ public class DishServiceImpl implements DishService {
         log.info("selectList() called with parameters => 【categoryId = {}】",categoryId);
         return dishMapper.selectByCategoryId(categoryId);
     }
+
+    /**
+     * 菜品停售或起售
+     * @param status
+     * @param id
+     */
+    @Override
+    public void statusOrStop(Integer status, Long id) {
+        dishMapper.statusOrStop(status,id);
+    }
 }

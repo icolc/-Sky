@@ -51,4 +51,11 @@ public interface DishService {
      * @return
      */
     List<DishVO> selectList(Integer categoryId);
+
+    /**
+     * 修改菜品状态
+     * @param status
+     * @param id
+     */
+    void statusOrStop(Integer status, Long id);
 }

@@ -33,7 +33,7 @@ public interface SetmealService {
      * @param id
      * @return
      */
-    SetmealVO selectById(Integer id);
+    SetmealVO selectById(Long id);
 
     /**
      * 修改套餐
@@ -45,11 +45,11 @@ public interface SetmealService {
      * 根据ids删除
      * @param ids
      */
-    void deleteByIds(List<Integer> ids);
+    void deleteByIds(List<Long> ids);
 
     /**
      * 起售
      * @param status
      */
-    void updateStatus(Integer status,Integer id);
+    void updateStatus(Integer status,Long id);
 }

@@ -63,4 +63,10 @@ public class GlobalExceptionHandler {
             return Result.error(MessageConstant.UNKNOWN_ERROR);
         }
     }
+
+    @ExceptionHandler(Exception.class)
+    public Result exception(Exception exception){
+        log.error("exception() called with exception => 【exception = {}】",exception,exception);
+        return Result.error(MessageConstant.UNKNOWN_ERROR);
+    }
 }

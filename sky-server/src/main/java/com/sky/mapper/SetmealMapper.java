@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.sky.annotation.InsertAutoFile;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
-import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -37,7 +36,7 @@ public interface SetmealMapper {
      * @return
      */
     @Select("select * from setmeal where id = #{id} ;")
-    SetmealVO selectById(Integer id);
+    Setmeal selectById(Long id);
 
     /**
      * 修改套餐
@@ -50,10 +49,17 @@ public interface SetmealMapper {
      * @param ids
      * @return
      */
-    Setmeal selectByIds(List<Integer> ids);
+    Integer selectByIds(List<Long> ids);
 
     /**
      * 根据IDS删除
      */
-    void deleteByIds(List<Integer> ids);
+    void deleteByIds(List<Long> ids);
+
+    /**
+     * 更改状态
+     * @param status
+     * @param id
+     */
+    void statusOrStop(Integer status, Long id);
 }

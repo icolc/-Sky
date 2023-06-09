@@ -25,6 +25,10 @@
         where id = #{id}
     </update>
 
+    <update id="statusOrStop">
+        update setmeal set status = #{status} where id = #{id}
+    </update>
+
     <delete id="deleteByIds">
         delete
         from setmeal
@@ -59,7 +63,7 @@
             </if>
         </where>
     </select>
-    <select id="selectByIds" resultType="com.sky.entity.Setmeal">
+    <select id="selectByIds" resultType="integer">
         select count(*)
         from setmeal
         where status = 1

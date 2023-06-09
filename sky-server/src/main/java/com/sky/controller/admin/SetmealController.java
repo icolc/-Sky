@@ -9,7 +9,6 @@ import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +26,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/setmeal")
 public class SetmealController {
-    @Autowired
-    private SetmealService setmealService;
+    private final SetmealService setmealService;
+
+    public SetmealController(SetmealService setmealService) {
+        this.setmealService = setmealService;
+    }
 
     /**
      * 分页查询
      *
-     * @param setmealPageQueryDTO
-     * @return
      */
     @ApiOperation("分页查询")
     @GetMapping("/page")
@@ -63,7 +63,7 @@ public class SetmealController {
      */
     @ApiOperation("查询回显")
     @GetMapping("/{id}")
-    public Result<SetmealVO> selectByid(@PathVariable Integer id) {
+    public Result<SetmealVO> selectByid(@PathVariable Long id) {
         log.info("selectByid() called with parameters => 【id = {}】", id);
         //调用service方法
         SetmealVO setmealVO = setmealService.selectById(id);
@@ -87,18 +87,18 @@ public class SetmealController {
      */
     @ApiOperation("删除套餐")
     @DeleteMapping
-    public Result<?> deleteByIds(List<Integer> ids){
+    public Result<?> deleteByIds(@RequestParam List<Long> ids){
         log.info("deleteByIds() called with parameters => 【ids = {}】",ids);
         setmealService.deleteByIds(ids);
         return Result.success();
     }
 
     /**
-     * 起售方法
+     * 起售停售方法
      */
     @ApiOperation("起售方法")
-    @GetMapping("/status/{status}")
-    public Result<?> updateStatus(@PathVariable Integer status, Integer id){
+    @PostMapping("/status/{status}")
+    public Result<?> updateStatus(@PathVariable Integer status, Long id){
         log.info("updateStatus() called with parameters => 【status = {}】",status);
         setmealService.updateStatus(status,id);
         return Result.success();

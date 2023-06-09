@@ -5,11 +5,18 @@
 <mapper namespace="com.sky.mapper.SetmealDishMapper">
     <insert id="insert">
         insert into setmeal_dish (setmeal_id,dish_id, name, price, copies)
-        VALUES
+        VALUE
         <foreach collection="setmealDishes" item="sd" separator=",">
             (#{sd.setmealId}, #{sd.dishId}, #{sd.name}, #{sd.price}, #{sd.copies})
         </foreach>
     </insert>
+
+    <delete id="deleteBatchBySetmealId">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" separator="," item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 
     <select id="selectSetMealIdsByDishIds" resultType="java.lang.Long">
         select setmeal_id
