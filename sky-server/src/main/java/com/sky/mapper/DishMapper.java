@@ -69,13 +69,6 @@ public interface DishMapper {
     @Select("select * from dish where category_id = #{categoryId}")
     List<DishVO> selectByCategoryId(Integer categoryId);
 
-    /**
-     * 根据套餐关系表确定是否存在为起售的
-     *
-     * @param id
-     */
-    @Select("select count(*) from dish where status = 0 and id = #{id}")
-    List<Integer> selectStatusBySetmaelDishId(Long id);
 
     @Update("update dish set status = #{status} where id = #{id}")
     void statusOrStop(Integer status, Long id);
@@ -86,4 +79,11 @@ public interface DishMapper {
      * @return
      */
     List<DishVO> selectByName(String name);
+
+    /**
+     * 查询状态
+     * @param dishIds
+     * @return
+     */
+    Integer selectBatchDishStatusByIds(List<Long> dishIds);
 }

@@ -78,4 +78,15 @@
         from dish
         where name like concat('%', #{name}, '%');
     </select>
+
+
+    <select id="selectBatchDishStatusByIds" resultType="java.lang.Integer">
+        select count(*)
+        from dish
+        where id in
+        <foreach collection="dishIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and status = 0
+    </select>
 </mapper>

@@ -62,4 +62,5 @@ public interface SetmealMapper {
      * @param id
      */
     void statusOrStop(Integer status, Long id);
+
 }

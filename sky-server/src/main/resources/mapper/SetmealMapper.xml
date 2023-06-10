@@ -29,6 +29,7 @@
         update setmeal set status = #{status} where id = #{id}
     </update>
 
+
     <delete id="deleteByIds">
         delete
         from setmeal

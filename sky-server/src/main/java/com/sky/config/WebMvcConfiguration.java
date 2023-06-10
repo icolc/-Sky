@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 配置类，注册web层相关组件
+ *
  * @author NXRUI
  */
 @Configuration
@@ -35,7 +36,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 注册自定义拦截器
-     *
      */
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
@@ -57,10 +57,29 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .description("苍穹外卖项目接口文档")
                 .build();
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("管理端接口")
                 .apiInfo(apiInfo)
                 .select()
                 //指定生成接口需要扫描的包
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.admin"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    @Bean
+    public Docket docket2() {
+        log.info("准备生成接口文档");
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("苍穹外卖项目接口文档")
+                .version("2.0")
+                .description("苍穹外卖项目接口文档")
+                .build();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("用户端接口")
+                .apiInfo(apiInfo)
+                .select()
+                //指定生成接口需要扫描的包
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.user"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -84,6 +103,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //为消息转换器设置一个对象转换器，对象转换器可以将Java的对象序列化为jason对象
         converter.setObjectMapper(new JacksonObjectMapper());
         //将自己的消息转化器加入到容器中
-        converters.add(0,converter);
+        converters.add(0, converter);
     }
 }

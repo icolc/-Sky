@@ -19,7 +19,7 @@ public interface SetmealDishMapper {
      * @param dishIds
      * @return
      */
-    List<Long> selectSetMealIdsByDishIds(List<Long> dishIds);
+    List<Long> selectSetMealIdsByDishIds(List<Long> ids);
 
     /**
      *插入
@@ -36,11 +36,6 @@ public interface SetmealDishMapper {
      */
     void deleteBatchBySetmealId(List<Long> ids);
 
-    /**
-     * 根据setmealID查询所有的菜品id
-     * @param id
-     * @return
-     */
-    @Select("select count(*) from setmeal_dish where setmeal_id = #{id}")
-    List<Integer> selectAllBySetmealId(Long id);
+
+    List<Long> selectDishIdBySetmealId(Long id);
 }

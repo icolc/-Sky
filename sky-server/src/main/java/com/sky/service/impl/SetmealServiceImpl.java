@@ -3,7 +3,6 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
-import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Category;
@@ -163,15 +162,12 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Override
     public void updateStatus(Integer status, Long id) {
-        if (status.equals(StatusConstant.ENABLE)){
-            List<Integer> disList = setmealDishMapper.selectAllBySetmealId(id);
-            //根据菜品id查询菜品是否起售
-            disList.stream().forEach(dis -> {
-                List<Integer> integer = dishMapper.selectStatusBySetmaelDishId(id);
-                if (integer.size() > 0) {
-                    throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
-                }
-            });
+        if (status == 1) {
+            List<Long> dishIds = setmealDishMapper.selectDishIdBySetmealId(id);
+            Integer count = dishMapper.selectBatchDishStatusByIds(dishIds);
+            if(count > 0){
+                throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+            }
         }
         setmealMapper.statusOrStop(status, id);
     }
