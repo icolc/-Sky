@@ -16,6 +16,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -165,11 +166,28 @@ public class SetmealServiceImpl implements SetmealService {
         if (status == 1) {
             List<Long> dishIds = setmealDishMapper.selectDishIdBySetmealId(id);
             Integer count = dishMapper.selectBatchDishStatusByIds(dishIds);
-            if(count > 0){
+            if (count > 0) {
                 throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
             }
         }
         setmealMapper.statusOrStop(status, id);
     }
+
+    /**
+     * 条件查询
+     *
+     * @param setmeal
+     * @return
+     */
+    public List<Setmeal> list(Setmeal setmeal) {
+        List<Setmeal> list = setmealMapper.list(setmeal);
+        return list;
+    }
+
+    @Override
+    public List<DishItemVO> selectDishItemById(Long id) {
+        return setmealMapper.getDishItemBySetmealId(id);
+    }
+
 
 }

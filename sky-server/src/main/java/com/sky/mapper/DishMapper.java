@@ -86,4 +86,11 @@ public interface DishMapper {
      * @return
      */
     Integer selectBatchDishStatusByIds(List<Long> dishIds);
+
+    /**
+     * 条件查询菜品和口味数据
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
 }

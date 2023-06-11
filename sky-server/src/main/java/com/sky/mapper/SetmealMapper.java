@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.annotation.InsertAutoFile;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
+import com.sky.vo.DishItemVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -63,4 +64,17 @@ public interface SetmealMapper {
      */
     void statusOrStop(Integer status, Long id);
 
+    /**
+     * 动态查询套餐
+     * @param setmeal
+     * @return
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据套餐id查询菜品
+     * @param id
+     * @return
+     */
+    List<DishItemVO> getDishItemBySetmealId(Long id);
 }

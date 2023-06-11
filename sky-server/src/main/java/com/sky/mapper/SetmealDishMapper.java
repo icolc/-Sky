@@ -16,7 +16,7 @@ import java.util.List;
 public interface SetmealDishMapper {
     /**
      * 根据菜品ID查询对应的套餐id
-     * @param dishIds
+     * @param
      * @return
      */
     List<Long> selectSetMealIdsByDishIds(List<Long> ids);

@@ -45,7 +45,7 @@ sky:
     admin-token-name: token
 
     # 设置用户Jwt签名
-    user-secret-key: XRUI
+    user-secret-key: itheima
     # 设置用户Jwt过期时间
     user-ttl: 7200000
     # 设置用户前端传过来的令牌名称

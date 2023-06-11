@@ -3,9 +3,10 @@ package com.sky.controller.user;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
+import com.sky.properties.JwtProperties;
 import com.sky.result.Result;
 import com.sky.service.UserService;
-import com.sky.utils.JwtUtils;
+import com.sky.utils.JwtUtil;
 import com.sky.vo.UserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,9 +31,11 @@ import java.util.HashMap;
 public class UserController {
 
     private final UserService userService;
+    private final JwtProperties jwtProperties;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtProperties jwtProperties) {
         this.userService = userService;
+        this.jwtProperties = jwtProperties;
     }
 
     /**
@@ -42,20 +45,20 @@ public class UserController {
      */
     @ApiOperation("/微信登录")
     @PostMapping("/login")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
-        log.info("login() called with parameters => 【userLoginDTO = {}】",userLoginDTO);
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
+        log.info("login() called with parameters => 【userLoginDTO = {}】", userLoginDTO);
+        //微信登录
         User user = userService.wxLogin(userLoginDTO);
         //为用户生产JWT令牌
         HashMap<String, Object> map = new HashMap<>();
-        map.put(JwtClaimsConstant.USER_ID,user.getId());
-        String token = JwtUtils.generateJwt(map);
+        map.put(JwtClaimsConstant.USER_ID, user.getId());
+        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), map);
 
-        UserLoginVO build = UserLoginVO.builder()
+        UserLoginVO userLoginVo = UserLoginVO.builder()
                 .id(user.getId())
                 .openid(user.getOpenid())
                 .token(token)
                 .build();
-
-        return Result.success(build);
+        return Result.success(userLoginVo);
     }
 }

@@ -89,4 +89,22 @@
         </foreach>
         and status = 0
     </select>
+
+    <select id="list" resultType="com.sky.entity.Dish">
+        select d.*, c.name categoryName
+        from dish d
+        left join category c on d.category_id = c.id
+        <where>
+            <if test="name != null and name.trim() != ''">
+                and d.name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null ">
+                and d.status = #{status}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
 </mapper>

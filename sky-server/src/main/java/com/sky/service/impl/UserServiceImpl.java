@@ -62,10 +62,7 @@ public class UserServiceImpl implements UserService {
             //调用mapper的新增方法
             userMapper.insert(user);
         }
-        //新用户，存到表
-
         //不是，返回
-
         return user;
     }
 
