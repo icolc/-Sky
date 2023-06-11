@@ -17,7 +17,6 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,17 +32,19 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class DishServiceImpl implements DishService {
-    @Autowired
-    private DishMapper dishMapper;
-    @Autowired
-    private DishFlavorMapper dishFlavorMapper;
-    @Autowired
-    private SetmealDishMapper setmealDishMapper;
+    private final DishMapper dishMapper;
+    private final DishFlavorMapper dishFlavorMapper;
+    private final SetmealDishMapper setmealDishMapper;
+
+    public DishServiceImpl(DishMapper dishMapper, DishFlavorMapper dishFlavorMapper, SetmealDishMapper setmealDishMapper) {
+        this.dishMapper = dishMapper;
+        this.dishFlavorMapper = dishFlavorMapper;
+        this.setmealDishMapper = setmealDishMapper;
+    }
 
     /**
      * 新增菜品
      *
-     * @param dishDTO
      */
     @Override
     @Transactional
@@ -59,9 +60,7 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (Objects.nonNull(flavors) && flavors.size() > 0) {
             //将菜品id传进口味里
-            flavors.forEach(flavor -> {
-                flavor.setDishId(id);
-            });
+            flavors.forEach(flavor -> flavor.setDishId(id));
             //有口味：向口味表中插入数据
             dishFlavorMapper.insertBath(flavors);
         }
@@ -70,8 +69,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 菜品分页查询
      *
-     * @param dishPageQueryDTO
-     * @return
      */
     @Override
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
@@ -84,7 +81,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 根据ID批量删除
      *
-     * @param ids
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -118,8 +114,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 根据id查询菜品以及口味数据
      *
-     * @param id
-     * @return
      */
     @Override
     public DishVO selectByIdWithFlavor(Long id) {
@@ -137,7 +131,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 修改菜品
      *
-     * @param dishDTO
      */
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
@@ -152,9 +145,7 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (Objects.nonNull(flavors) && flavors.size() > 0) {
             //将菜品id传进口味里
-            flavors.forEach(flavor -> {
-                flavor.setDishId(dishDTO.getId());
-            });
+            flavors.forEach(flavor -> flavor.setDishId(dishDTO.getId()));
             //有口味：向口味表中插入数据
             dishFlavorMapper.insertBath(flavors);
         }
@@ -163,8 +154,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 根据分类查询
      *
-     * @param categoryId
-     * @return
      */
     @Override
     public List<DishVO> selectList(Integer categoryId, String name) {
@@ -179,8 +168,6 @@ public class DishServiceImpl implements DishService {
     /**
      * 菜品停售或起售
      *
-     * @param status
-     * @param id
      */
     @Override
     public void statusOrStop(Integer status, Long id) {
