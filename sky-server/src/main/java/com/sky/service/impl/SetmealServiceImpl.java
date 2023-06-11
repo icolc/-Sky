@@ -146,7 +146,7 @@ public class SetmealServiceImpl implements SetmealService {
         }
         //查询，看看是否在起售
         Integer count = setmealMapper.selectByIds(ids);
-        if (Objects.nonNull(count)) {
+        if (count > 0) {
             //有套餐在起售
             throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
         }
