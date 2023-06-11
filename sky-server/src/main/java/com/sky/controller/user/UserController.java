@@ -44,7 +44,6 @@ public class UserController {
     @PostMapping("/login")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
         log.info("login() called with parameters => 【userLoginDTO = {}】",userLoginDTO);
-
         User user = userService.wxLogin(userLoginDTO);
         //为用户生产JWT令牌
         HashMap<String, Object> map = new HashMap<>();
