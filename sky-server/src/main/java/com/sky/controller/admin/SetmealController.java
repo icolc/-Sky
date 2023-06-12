@@ -9,6 +9,7 @@ import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,7 @@ public class SetmealController {
      */
     @ApiOperation("新增套餐")
     @PostMapping
+    @CacheEvict(cacheNames = "setmealCache",key = "#setmealDTO.categoryId") //新增套餐后，需要删除当前redis中对应的数据
     public Result<?> insert(@RequestBody SetmealDTO setmealDTO) {
         log.info("insert() called with parameters => 【setmealDTO = {}】", setmealDTO);
         //调用service新增方法
@@ -75,6 +77,7 @@ public class SetmealController {
      */
     @ApiOperation("修改套餐")
     @PutMapping
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //清理所有缓存数据
     public Result<?> update(@RequestBody SetmealDTO setmealDTO) {
         log.info("update() called with parameters => 【setmealDTO = {}】", setmealDTO);
         //调用修改方法
@@ -87,6 +90,7 @@ public class SetmealController {
      */
     @ApiOperation("删除套餐")
     @DeleteMapping
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //清理所有缓存数据
     public Result<?> deleteByIds(@RequestParam List<Long> ids){
         log.info("deleteByIds() called with parameters => 【ids = {}】",ids);
         setmealService.deleteByIds(ids);
@@ -98,6 +102,7 @@ public class SetmealController {
      */
     @ApiOperation("起售方法")
     @PostMapping("/status/{status}")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //清理所有缓存数据
     public Result<?> updateStatus(@PathVariable Integer status, Long id){
         log.info("updateStatus() called with parameters => 【status = {}】",status);
         setmealService.updateStatus(status,id);

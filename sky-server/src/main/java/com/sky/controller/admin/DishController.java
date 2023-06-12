@@ -131,6 +131,8 @@ public class DishController {
     private void cleanCache() {
         //将所有菜品数据从缓存中删
         Set dish = redisTemplate.keys("dish_*");
-        redisTemplate.delete(dish);
+        if (dish != null) {
+            redisTemplate.delete(dish);
+        }
     }
 }
